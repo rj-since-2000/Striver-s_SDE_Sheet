@@ -1,0 +1,16 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int temp;
+        int n = matrix[0].size();
+        for (int row = 0; row < n/2; row++) {
+            for (int i = 0; i < n - 1 - 2*row; i++) {
+                temp = matrix[row][i + row];
+                matrix[row][i + row] = matrix[n - 1 - row - i][row];
+                matrix[n - 1 - row - i][row] = matrix[n - 1 - row][n - 1 - row - i];
+                matrix[n - 1 - row][n - 1 - row - i] = matrix[row + i][n - 1 - row];
+                matrix[row + i][n - 1 - row] = temp;
+            }
+        }
+    }
+};
