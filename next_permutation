@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        bool flag = false;
+        int temp;
+        int min = -1;
+        int a = 0, b = 0;
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[j] < nums[i]) {
+                    flag = true;
+                    if (j > min) {
+                        min = j;
+                        a = i;
+                        b = j;
+                        break;
+                    }
+                }
+            }
+        }
+        temp = nums[b];
+        nums[b] = nums[a];
+        nums[a] = temp;
+        sort(nums.begin() + b + 1, nums.end());
+        if (!flag) sort(nums.begin(), nums.end());
+    }
+};
