@@ -1,0 +1,21 @@
+class Solution {
+    
+public:
+    static bool binarySearch(vector<vector<int>>& matrix, int target, int l, int r, int m, int n) {
+        if (r < l) return false;
+        int mid = l + (r - l)/2;
+        int i = mid/n;
+        int j = mid%n;
+        if (matrix[i][j] == target) return true;
+        else if (matrix[i][j] < target) {
+            return binarySearch(matrix, target, mid + 1, r, m, n);
+        } else {
+            return binarySearch(matrix, target, l, mid - 1, m, n);
+        }
+    }
+    
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        return binarySearch(matrix, target, 0, matrix.size()*matrix[0].size() - 1, matrix.size(), matrix[0].size());
+    }
+};
