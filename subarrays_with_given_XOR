@@ -1,0 +1,16 @@
+int Solution::solve(vector<int> &A, int B) {
+    unordered_map<int, int> map;
+    long long int x = 0;
+    int count = 0;
+    for (int i = 0; i < A.size(); i++) {
+        x = x^A[i];
+        if (x == B) {
+            count++;
+        }
+        if (map[x^B] > 0) {
+            count += map[x^B];
+        }
+        map[x]++;
+    }
+    return count;
+}
