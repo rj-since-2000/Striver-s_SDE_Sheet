@@ -1,0 +1,18 @@
+class Solution
+{
+public:
+    void subsets(vector<int> &ans, vector<int> arr, int N, int i, int sum) {
+        if (i == N) return;
+        ans.push_back(sum + arr[i]);
+        subsets(ans, arr, N, i + 1, sum);
+        subsets(ans, arr, N, i + 1, sum + arr[i]);
+    }
+public:
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        vector<int> ans;
+        ans.push_back(0);
+        subsets(ans, arr, N, 0, 0);
+        return ans;
+    }
+};
