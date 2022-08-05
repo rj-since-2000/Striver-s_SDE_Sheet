@@ -1,0 +1,48 @@
+class Solution {
+public:
+    bool isValid(vector<string> &board, int i, int j, int n) {
+        int sum = i + j;
+        for (int p = 0; p < n; p++) {
+            if (board[i][p] == 'Q' && p != j) return false;
+            if (board[p][j] == 'Q' && p != i) return false;
+            if (sum - p >= 0 && sum - p < n && board[p][sum - p] == 'Q' && p != i) return false;
+            if (i >= j) {
+                if (p - (i - j) >= 0 && p - (i - j) < n && board[p][p - (i - j)] == 'Q' && p != i)
+                    return false;
+            } else {
+                if (p - (j - i) >= 0 && p - (j - i) < n && board[p - (j - i)][p] == 'Q' && p != j)
+                    return false;
+            }
+        }
+        return true;
+    }
+public:
+    void solve(vector<vector<string>> &ans, vector<string> &board, int n, int i, int q) {
+        if (i == n || q == 0) {
+            if (q == 0) ans.push_back(board);
+            return;
+        }
+        for (int k = 0; k < n; k++) {
+            if (isValid(board, i, k, n)) {
+                board[i][k] = 'Q';
+                solve(ans, board, n, i + 1, q - 1);
+                board[i][k] = '.';
+            }
+        }
+    }
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board;
+        vector<vector<string>> ans;
+        for (int i = 0; i < n; i++) {
+            string temp = "";
+            for (int j = 0; j < n; j++) {
+                temp += '.';
+            }
+            board.push_back(temp);
+        }
+        int queens = n;
+        solve(ans, board, n, 0, queens);
+        return ans;
+    }
+};
