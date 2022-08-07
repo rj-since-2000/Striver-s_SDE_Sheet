@@ -1,0 +1,28 @@
+bool isPossible(int mid, vector<int> positions, int n, int c) {
+    int count = 1;
+    int prePos = positions[0];
+    for (int i = 1; i < n; i++) {
+        if (positions[i] - prePos >= mid) {
+            count++;
+            prePos = positions[i];
+        }
+        if (count == c) return true;
+    }
+    return false;
+}
+
+int chessTournament(vector<int> positions , int n ,  int c){
+    sort(positions.begin(), positions.end());
+    int lb = 1;
+    int ub = positions[n - 1] - positions[0];
+    int mid;
+    while (lb <= ub) {
+        mid = (lb + ub)/2;
+        if (isPossible(mid, positions, n, c)) {
+            lb = mid + 1;
+        } else {
+            ub = mid - 1;
+        }
+    }
+    return ub;
+}
