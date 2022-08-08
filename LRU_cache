@@ -1,0 +1,82 @@
+struct Node {
+    pair<int, int> val;
+    Node *left;
+    Node *right;
+};
+
+class LRUCache {
+public:
+    unordered_map<int, Node*> cache;
+    int cap;
+    Node *head;
+    Node *tail;
+    int count;
+public:
+    LRUCache(int capacity) {
+        cap = capacity;
+        count = 0;
+        head = new Node();
+        tail = new Node();
+        head->right = tail;
+        tail->left = head;
+        cache.clear();
+    }
+    
+    int get(int key) {
+        if (cache[key]) {
+            updateRecent(key);
+            return cache[key]->val.second;
+        } else {
+            return -1;
+        }
+    }
+    
+    void put(int key, int value) {
+        if (cache[key]) {
+            cache[key]->val.second = value;
+            updateRecent(key);
+        } else if (count < cap) {
+            Node *newNode = addNewNodeAtHead(key, value);
+            cache[key] = newNode;
+            count++;
+        } else {
+            Node *last = tail->left;
+            Node *temp = tail->left->left;
+            temp->right = tail;
+            tail->left = temp;
+            cache[last->val.first] = NULL;
+            Node *newNode = addNewNodeAtHead(key, value);
+            cache[key] = newNode;
+        }
+    }
+    
+    void updateRecent(int key) {
+        Node *temp = cache[key];
+        temp->left->right = temp->right;
+        temp->right->left = temp->left;
+        Node *temp2 = head->right;
+        head->right = temp;
+        temp->left = head;
+        temp->right = temp2;
+        temp2->left = temp;
+    }
+    
+    Node* addNewNodeAtHead(int key, int value) {
+        Node *temp = new Node();
+        temp->val.first = key;
+        temp->val.second = value;
+        Node *temp2 = head->right;
+        head->right = temp;
+        temp->left = head;
+        temp->right = temp2;
+        temp2->left = temp;
+        return temp;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
