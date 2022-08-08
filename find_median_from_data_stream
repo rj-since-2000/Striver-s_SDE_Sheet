@@ -1,0 +1,63 @@
+class MedianFinder {
+    priority_queue<int> maxHeap;
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    int c1;
+    int c2;
+public:
+    MedianFinder() {
+        this->c1 = 0;
+        this->c2 = 0;
+    }
+    
+    void addNum(int num) {
+        if (this->maxHeap.empty()) {
+            this->maxHeap.push(num);
+            this->c1++;
+        } else if (this->minHeap.empty()) {
+            if (this->maxHeap.top() > num) {
+                int temp = this->maxHeap.top();
+                this->maxHeap.pop();
+                this->maxHeap.push(num);
+                this->minHeap.push(temp);
+            } else {
+                this->minHeap.push(num);
+            }
+            this->c2++;
+        } else {
+            if (num > this->minHeap.top()) {
+                minHeap.push(num);
+                this->c2++;
+            } else {
+                maxHeap.push(num);
+                this->c1++;
+            }
+        }
+        while (c2 > c1) {
+            this->maxHeap.push(minHeap.top());
+            this->c1++;
+            this->minHeap.pop();
+            this->c2--;
+        }
+        while (c1 > c2 + 1) {
+            this->minHeap.push(maxHeap.top());
+            this->c2++;
+            this->maxHeap.pop();
+            this->c1--;
+        }
+    }
+    
+    double findMedian() {
+        if (c1 > c2) {
+            return this->maxHeap.top();
+        } else {
+            return (this->maxHeap.top() + this->minHeap.top())/2.0;
+        }
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
