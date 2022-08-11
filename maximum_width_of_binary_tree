@@ -1,0 +1,35 @@
+typedef signed long long int ll;
+class Solution {  
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if (!root) return 0;
+        queue<pair<TreeNode*, ll>> q1;
+        queue<pair<TreeNode*, ll>> q2;
+        q1.push({root, 0});
+        int ans = 1;
+        while (q1.size() > 0) {
+            while (q1.size() > 0) {
+                q2.push(q1.front());
+                q1.pop();
+            }
+            ll m = q2.front().second;
+            while (q2.size() > 0) {
+                pair<TreeNode*, ll> n = q2.front();
+                q2.pop();
+                if (n.first->left != NULL) {
+                    q1.push({n.first->left, n.second*2 + 1 - m});
+                }
+                if (n.first->right != NULL) {
+                    q1.push({n.first->right, n.second*2 + 2 - m});
+                }
+            }
+            if (q1.size() > 0) {
+                ll width = q1.back().second - q1.front().second + 1;
+                if (width > ans) {
+                    ans = width;
+                }
+            }
+        }
+        return ans;
+    }
+};
