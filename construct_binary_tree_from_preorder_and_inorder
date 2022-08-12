@@ -1,0 +1,39 @@
+class Solution {
+public:
+    void solve(TreeNode* root, vector<int> preorder, vector<int> inorder) {
+        vector<int> left_pre, right_pre, left_in, right_in;
+        if (preorder.size() == 0) {
+            root = NULL;
+            return;
+        }
+        root->val = preorder[0];
+        int i = 0;
+        while (inorder[i] != root->val) {
+            left_in.push_back(inorder[i]);
+            i++;
+            left_pre.push_back(preorder[i]);
+        }
+        i++;
+        while (i < inorder.size()) {
+            right_in.push_back(inorder[i]);
+            right_pre.push_back(preorder[i]);
+            i++;
+        }
+        if (left_pre.size() > 0) {
+            TreeNode* left = new TreeNode();
+            root->left = left;
+            solve(left, left_pre, left_in);
+        }
+        if (right_pre.size() > 0) {
+            TreeNode* right = new TreeNode();
+            root->right = right;
+            solve(right, right_pre, right_in);
+        }
+    }
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        TreeNode* root = new TreeNode();
+        solve(root, preorder, inorder);
+        return root;
+    }
+};
