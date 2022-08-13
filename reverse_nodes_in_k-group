@@ -1,0 +1,30 @@
+class Solution {
+public:
+    ListNode* reverseLink(ListNode* head) {
+        ListNode* temp = NULL;
+        while (head->next) {
+            ListNode* next = head->next;
+            head->next = temp;
+            temp = head;
+            head = next;
+        }
+        head->next = temp;
+        return head;
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if (!head) return head;
+        ListNode* temp = head;
+        int count = 1;
+        while (count < k) {
+            if (!temp->next) return head;
+            temp = temp->next;
+            count++;
+        }
+        ListNode* nextHead = temp->next;
+        ListNode* currHead = head;
+        temp->next = NULL;
+        head = reverseLink(head);
+        currHead->next = reverseKGroup(nextHead, k);
+        return head;
+    }
+};
