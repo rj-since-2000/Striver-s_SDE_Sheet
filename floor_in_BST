@@ -1,0 +1,18 @@
+int ans = INT_MIN;
+void solve(TreeNode<int> * root, int X) {
+    if (!root || root->val == -1) return;
+    if (root->val < X) {
+        if (root->val > ans) ans = root->val;
+        solve(root->right, X);
+    } else if (root->val > X) {
+        solve(root->left, X);
+    } else {
+        ans = root->val;
+        return;
+    }
+}
+int floorInBST(TreeNode<int> * root, int X) {
+    ans = INT_MIN;
+    solve(root, X);
+    return ans;
+}
