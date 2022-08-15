@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool solve(vector<vector<char>>& board, string word, vector<vector<int>> &visited, int p, int i, int j, int m, int n) {
+        if (p == word.size()) return true;
+        if (i < 0 || j < 0 || i >= m || j >= n || visited[i][j] || board[i][j] != word[p]) return false;
+        visited[i][j] = true;
+        bool d = solve(board, word, visited, p + 1, i + 1, j, m, n);
+        bool r = solve(board, word, visited, p + 1, i, j + 1, m, n);
+        bool u = solve(board, word, visited, p + 1, i - 1, j, m, n);
+        bool l = solve(board, word, visited, p + 1, i, j - 1, m, n);
+        visited[i][j] = false;
+        return d || r || u || l;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size();
+        int n = board[0].size();
+        vector<vector<int>> visited(m, vector<int>(n, false));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == word[0]) {
+                    if (solve(board, word, visited, 0, i, j, m, n)) return true;
+                } 
+            }
+        }
+        return false;
+    }
+};
