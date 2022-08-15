@@ -1,0 +1,24 @@
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if (!node) return node;
+        unordered_map<Node*, Node*> mapping;
+        queue<Node*> q;
+        q.push(node);
+        Node* n = new Node(node->val, {});
+        mapping[node] = n;
+        while (!q.empty()) {
+            Node* t = q.front();
+            q.pop();
+            for (auto it : t->neighbors) {
+                if (mapping[it] == NULL) {
+                    Node* nn = new Node(it->val, {});
+                    mapping[it] = nn;
+                    q.push(it);
+                }
+                mapping[t]->neighbors.push_back(mapping[it]);
+            }
+        }
+        return n;
+    }
+};
