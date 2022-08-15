@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool hasCycle(vector<int> adj[], vector<bool> &vis, vector<bool> &dfsVis, int node) {
+        vis[node] = true;
+        dfsVis[node] = true;
+        for (auto it : adj[node]) {
+            if (!vis[it]) {
+                if (hasCycle(adj, vis, dfsVis, it)) return true;
+            } else if (dfsVis[it]) return true;
+        }
+        dfsVis[node] = false;
+        return false;
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<bool> vis(numCourses + 1, false);
+        vector<bool> dfsVis(numCourses + 1, false);
+        vector<int> adj[numCourses + 1];
+        for (int i = 0; i < prerequisites.size(); i++) {
+            adj[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        for (int i = 0; i < numCourses; i++) {
+            if (!vis[i]) {
+                if (hasCycle(adj, vis, dfsVis, i)) return false;
+            }
+        }
+        return true;
+    }
+};
