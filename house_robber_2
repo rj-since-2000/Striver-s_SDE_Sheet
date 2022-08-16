@@ -1,0 +1,16 @@
+long long int solve(vector<int>& valueInHouse, int i, bool zeroStart, vector<vector<long long int>> &dp) {
+    if (zeroStart && i >= valueInHouse.size() - 1) return 0;
+    if (!zeroStart && i >= valueInHouse.size()) return 0;
+    if (dp[i][zeroStart] > -1) return dp[i][zeroStart];
+    long long int ans = max((long long int)valueInHouse[i] + solve(valueInHouse, i + 2, zeroStart, dp), solve(valueInHouse, i + 1, zeroStart, dp));
+    return dp[i][zeroStart] = ans;
+}
+
+long long int houseRobber(vector<int>& valueInHouse)
+{
+    if (valueInHouse.size() == 0) return 0;
+    if (valueInHouse.size() == 1) return valueInHouse[0];
+    bool zeroStart = true;
+    vector<vector<long long int>> dp(valueInHouse.size() + 1, vector<long long int>(2, -1));
+    return max(solve(valueInHouse, 0, zeroStart, dp), solve(valueInHouse, 1, !zeroStart, dp));
+}
